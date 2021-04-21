@@ -4,6 +4,24 @@ const Utils = require('./../utils')
 const User = require('./../models/User')
 const path = require('path')
 
+// User routes-----------------------------------------------------------------
+// GET - get all users
+// endpoint = /user------------------------------------------------------------
+/*
+This code block handles the request to retrieve all users from the database and if 
+this is unsuccessful, throws a generic error
+*/
+router.get('/', (req, res) => {
+    // Get all users from the user model using the find() method
+    User.find()
+        .then((users) => {
+            res.json(users)
+        })
+        .catch((err) => {
+            console.log("There was a problem with retrieving users ", err)
+        })
+})
+
 // GET - get single user -------------------------------------------------------
 router.get('/:id', Utils.authenticateToken, (req, res) => {
     if (req.user._id != req.params.id) {
