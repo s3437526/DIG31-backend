@@ -17,22 +17,26 @@ const userSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.Email,
         required: true
     },
+    username: {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
     },
     bio: {
-        type: String
+        type: String // NOT mandatory...
     },
-    avatar: {
-        type: String
+    imageURL: {
+        type: String // NOT mandatory...
     },
     accessLevel: {
         type: Number,
         required: true
     },
-    newUser: {
-        type: Boolean,
+    status: {
+        type: Number,
         default: true
     },
 }, { timestamps: true })
