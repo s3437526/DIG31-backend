@@ -20,8 +20,8 @@ const lightSchema = new mongoose.Schema({
     ipAddress: { type: String, required: true },
     mqttTopic: { type: String, required: true },
     lastActive: { type: Array, required: false },
-    activityHistory: { type: Number, required: false }, // Link to ActivityHistory?
-    activityDuration: { type: Array, required: false } // Link to ActivityHistory?
+    activityHistory: { type: Schema.Types.ObjectId, required: true, ref: 'ActivityHistory' } // Link to ActivityHistory?
+    // activityDuration: { type: Array, required: false } // Not needed - taken from ActivityHisotry duration?
 }, { timestamps: true })
 
 // model
