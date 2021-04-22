@@ -15,3 +15,6 @@ DIG31 - UX3 Backend
             2.3.3 `npm i -g nodemon`  
 
 3. To start run `nodemon server.js` OR `npm run dev` (if runing nodemon, refer to package.json for dev dependency)
+
+Deviations from A2:
+- Some schema models modified to improve interconnectivity e.g. placeName, type, activityHistory, imageURL, activityDuration were included as references to other entities rathern than stand-alone entities.
