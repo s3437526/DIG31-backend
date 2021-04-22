@@ -4,10 +4,10 @@ const Utils = require('./../utils')
 require('mongoose-type-email')
 
 // schema
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     firstName: {
         type: String,
-        require: true
+        required: true
     },
     lastName: {
         type: String,

@@ -9,22 +9,22 @@ const fileUpload = require('express-fileupload')
 
 // database connection ----------------------
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-})
-  .then(() => console.log("db connected!"))
-  .catch(err => console.error("db connection failed ", err))
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    })
+    .then(() => console.log("db connected!"))
+    .catch(err => console.error("db connection failed ", err))
 
 
 // express app setup -----------------------
 const app = express()
 app.use(express.static('public'))
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use('*', cors())
 app.use(fileUpload({
-  limits: { fileSize: 50 * 1024 * 1024 }
+    limits: { fileSize: 50 * 1024 * 1024 }
 }))
 
 // routes ---------------------------------
@@ -37,8 +37,15 @@ app.use('/auth', authRouter)
 const userRouter = require('./routes/user')
 app.use('/user', userRouter)
 
+// activity history
+const activityHistoryRouter = require('./routes/activityHistory')
+app.use('/activityHistory', activityHistoryRouter)
+
+// place
+const placeRouter = require('./routes/place')
+app.use('/place', placeRouter)
 
 // run app listen on port --------------------
 app.listen(port, () => {
-  console.log("App running on port ", port)
+    console.log("App running on port ", port)
 })

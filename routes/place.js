@@ -1,43 +1,43 @@
 const express = require('express')
 const router = express.Router()
 const Utils = require('./../utils')
-const User = require('./../models/User')
+const Place = require('./../models/Place')
 const path = require('path')
 
-// User routes-----------------------------------------------------------------
-// GET - get all users
-// endpoint = /user------------------------------------------------------------
+// Places routes-----------------------------------------------------------------
+// GET - get all places
+// endpoint = /place ------------------------------------------------------------
 /*
-This code block handles the request to retrieve all users from the database and if 
+This code block handles the request to retrieve all places from the database and if 
 this is unsuccessful, throws a generic error
 */
-router.get('/', (req, res) => {
-    // Get all users from the user model using the find() method
-    User.find()
-        .then((users) => {
-            res.json(users)
+router.get('/', (req, res) => { /** secure this down by adding auth token when done - only open for testing purposes */
+    // Get all histories from the activity history model using the find() method
+    Place.find()
+        .then((places) => {
+            res.json(places)
         })
         .catch((err) => {
-            console.log("There was a problem with retrieving users ", err)
+            console.log("There was a problem with retrieving places ", err)
         })
 })
 
-// GET - get single user -------------------------------------------------------
-router.get('/:id', (req, res) => { ////////////////////////////////////////////////Utils.authenticateToken,
-    if (req.user._id != req.params.id) { ///// not working....?
+// GET - get single activity history -------------------------------------------------------
+router.get('/:id', (req, res) => { //Utils.authenticateToken, 
+    if (req.activityHistory._id != req.params.id) {
         return res.status(401).json({
             message: "Not authorised"
         })
     }
 
-    User.findById(req.params.id)
-        .then(user => {
-            res.json(user)
+    ActivityHistory.findById(req.params.id)
+        .then(activityHistory => {
+            res.json(activityHistory)
         })
         .catch(err => {
             console.log(err)
             res.status(500).json({
-                message: "Couldn't get user",
+                message: "Couldn't get activity history",
                 error: err
             })
         })

@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Utils = require('./../utils')
-require('mongoose-type-email')
 
 // schema
 const lightSchema = new mongoose.Schema({
