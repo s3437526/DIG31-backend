@@ -16,6 +16,7 @@ router.get('/', (req, res) => { /** secure this down by adding auth token when d
     ActivityHistory.find()
         .then((activityHistories) => {
             res.json(activityHistories)
+            // console.log(activityHistories)
         })
         .catch((err) => {
             console.log("There was a problem with retrieving activity histories ", err)
@@ -24,7 +25,7 @@ router.get('/', (req, res) => { /** secure this down by adding auth token when d
 
 // GET - get single activity history -------------------------------------------------------
 router.get('/:id', (req, res) => { //Utils.authenticateToken, 
-    if (req.activityHistory._id != req.params.id) {
+    if (activityHistory._id != req.params.id) {
         return res.status(401).json({
             message: "Not authorised"
         })
@@ -44,69 +45,46 @@ router.get('/:id', (req, res) => { //Utils.authenticateToken,
 })
 
 
-// PUT - update user ---------------------------------------------
+// PUT - update activity history ---------------------------------------------      // This will push or pop to the array?
 router.put('/:id', Utils.authenticateToken, (req, res) => {
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
-    let avatarFilename = null
-
-    // if avatar image exists, upload!
-    if (req.files && req.files.avatar) {
-        // upload avater image then update user
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')
-        Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
-            avatarFilename = uniqueFilename
-                // update user with all fields including avatar
-            updateUser({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                avatar: avatarFilename,
-                bio: req.body.bio,
-                accessLevel: req.body.accessLevel
-            })
-        })
-    } else {
-        // update user without avatar
-        updateUser(req.body)
-    }
-
-    // update User
-    function updateUser(update) {
-        User.findByIdAndUpdate(req.params.id, update, { new: true })
-            .then(user => res.json(user))
+    // update activity history
+    function updateActivityHistory(update) {
+        ActivityHistory.findByIdAndUpdate(req.params.id, update, { new: true })
+            .then(activityHistory => res.json(activityHistory))
             .catch(err => {
                 res.status(500).json({
-                    message: 'Problem updating user',
+                    message: 'Problem updating acctivity history',
                     error: err
                 })
             })
     }
 })
 
-// POST - create new user --------------------------------------
+// POST - create new activity history --------------------------------------
 router.post('/', (req, res) => {
     // validate request
     if (Object.keys(req.body).length === 0) {
-        return res.status(400).send({ message: "User content can not be empty" })
+        return res.status(400).send({ message: "Activity history content can not be empty" })
     }
 
-    // check account with email doen't already exist
-    User.findOne({ email: req.body.email })
-        .then(user => {
-            if (user != null) {
+    // check account with email doen't already exist            // check other ways for activity history already existing?
+    ActivityHistory.findOne({ email: req.body.email })
+        .then(activityHistory => {
+            if (activityHistory != null) {
                 return res.status(400).json({
                     message: "email already in use, use different email address"
                 })
             }
             // create new user       
-            let newUser = new User(req.body)
-            newUser.save()
-                .then(user => {
+            let newActivityHistory = new ActivityHistory(req.body)
+            newActivityHistory.save()
+                .then(activityHistory => {
                     // success!  
                     // return 201 status with user object
-                    return res.status(201).json(user)
+                    return res.status(201).json(activityHistory)
                 })
                 .catch(err => {
                     console.log(err)
