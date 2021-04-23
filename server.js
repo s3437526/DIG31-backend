@@ -45,6 +45,19 @@ app.use('/activityHistory', activityHistoryRouter)
 const placeRouter = require('./routes/place')
 app.use('/place', placeRouter)
 
+// location
+const locationRouter = require('./routes/location')
+app.use('/location', locationRouter)
+
+// device
+const deviceRouter = require('./routes/device')
+app.use('/device', deviceRouter)
+
+// item
+const itemRouter = require('./routes/item') // for all items such as TV, Light, Sprinkler etc
+app.use('/item', itemRouter)
+
+
 // run app listen on port --------------------
 app.listen(port, () => {
     console.log("App running on port ", port)
