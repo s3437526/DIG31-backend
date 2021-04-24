@@ -24,7 +24,7 @@ const tvSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 // model
-const tvModel = mongoose.model('Tv', tvSchema)
+const tvModel = mongoose.model('Tv', tvSchema, "items")
 
 // export
 module.exports = tvModel

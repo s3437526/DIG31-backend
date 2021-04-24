@@ -73,11 +73,11 @@ router.post('/', (req, res) => {
     // check account with email doen't already exist            // check other ways for activity history already existing?
     ActivityHistory.findOne({ email: req.body.email })
         .then(activityHistory => {
-            if (activityHistory != null) {
-                return res.status(400).json({
-                    message: "email already in use, use different email address"
-                })
-            }
+            // if (activityHistory != null) {
+            //     return res.status(400).json({
+            //         message: "email already in use, use different email address"
+            //     })
+            // }
             // create new user       
             let newActivityHistory = new ActivityHistory(req.body)
             newActivityHistory.save()
@@ -89,7 +89,7 @@ router.post('/', (req, res) => {
                 .catch(err => {
                     console.log(err)
                     return res.status(500).send({
-                        message: "Problem creating account",
+                        message: "Problem creating activity history",
                         error: err
                     })
                 })

@@ -14,7 +14,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', (req, res) => {
     // Get all lights from the light model using the find() method
-    Item.find({type: "Light"})
+    Item.find().populate("placeName", "type", "activityHistory") // , "activityhistory" is problematic // also find the specific light somehow??
         .then((items) => {
             res.json(items)
         })

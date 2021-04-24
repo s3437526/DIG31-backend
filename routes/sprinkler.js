@@ -95,11 +95,11 @@ router.post('/', (req, res) => {
     // check account with email doen't already exist                /// look for something else here
     Sprinkler.findOne({ email: req.body.email })
         .then(sprinkler => {
-            if (sprinkler != null) {
-                return res.status(400).json({
-                    message: "email already in use, use different email address"
-                })
-            }
+            // if (sprinkler != null) {
+            //     return res.status(400).json({
+            //         message: "email already in use, use different email address"
+            //     })
+            // }
             // create new sprinkler       
             let newSprinkler = new Sprinkler(req.body)
             newSprinkler.save()

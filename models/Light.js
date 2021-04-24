@@ -24,7 +24,7 @@ const lightSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 // model
-const lightModel = mongoose.model('Light', lightSchema)
+const lightModel = mongoose.model('Light', lightSchema, "items")
 
 // export
 module.exports = lightModel

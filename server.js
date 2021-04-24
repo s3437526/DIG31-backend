@@ -61,9 +61,9 @@ app.use('/tv', tvRouter)
 const lightRouter = require('./routes/light')
 app.use('/light', lightRouter)
 
-// // item
-// const itemRouter = require('./routes/item')
-// app.use('/item', itemRouter)
+// sprinkler
+const sprinklerRouter = require('./routes/sprinkler')
+app.use('/sprinkler', sprinklerRouter)
 
 // run app listen on port --------------------
 app.listen(port, () => {

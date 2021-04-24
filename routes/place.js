@@ -44,7 +44,7 @@ router.get('/:id', (req, res) => { //Utils.authenticateToken,
 })
 
 
-// PUT - update user ---------------------------------------------
+// PUT - update place ---------------------------------------------
 router.put('/:id', Utils.authenticateToken, (req, res) => {
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
@@ -53,12 +53,12 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
 
     // if avatar image exists, upload!
     if (req.files && req.files.avatar) {
-        // upload avater image then update user
+        // upload avater image then update place
         let uploadPath = path.join(__dirname, '..', 'public', 'images')
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
             avatarFilename = uniqueFilename
-                // update user with all fields including avatar
-            updateUser({
+                // update place with all fields including avatar
+            updatePlace({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: req.body.email,
@@ -68,50 +68,50 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
             })
         })
     } else {
-        // update user without avatar
-        updateUser(req.body)
+        // update place without avatar
+        updatePlace(req.body)
     }
 
-    // update User
-    function updateUser(update) {
-        User.findByIdAndUpdate(req.params.id, update, { new: true })
-            .then(user => res.json(user))
+    // update Place
+    function updatePlace(update) {
+        Place.findByIdAndUpdate(req.params.id, update, { new: true })
+            .then(place => res.json(place))
             .catch(err => {
                 res.status(500).json({
-                    message: 'Problem updating user',
+                    message: 'Problem updating place',
                     error: err
                 })
             })
     }
 })
 
-// POST - create new user --------------------------------------
+// POST - create new place --------------------------------------
 router.post('/', (req, res) => {
     // validate request
     if (Object.keys(req.body).length === 0) {
-        return res.status(400).send({ message: "User content can not be empty" })
+        return res.status(400).send({ message: "Place content can not be empty" })
     }
 
     // check account with email doen't already exist
-    User.findOne({ email: req.body.email })
-        .then(user => {
-            if (user != null) {
-                return res.status(400).json({
-                    message: "email already in use, use different email address"
-                })
-            }
-            // create new user       
-            let newUser = new User(req.body)
-            newUser.save()
-                .then(user => {
+    Place.findOne({ email: req.body.email })
+        .then(place => {
+            // if (place != null) {
+            //     return res.status(400).json({
+            //         message: "email already in use, use different email address"
+            //     })
+            // }
+            // create new place       
+            let newPlace = new Place(req.body)
+            newPlace.save()
+                .then(place => {
                     // success!  
-                    // return 201 status with user object
-                    return res.status(201).json(user)
+                    // return 201 status with place object
+                    return res.status(201).json(place)
                 })
                 .catch(err => {
                     console.log(err)
                     return res.status(500).send({
-                        message: "Problem creating account",
+                        message: "Problem creating place",
                         error: err
                     })
                 })

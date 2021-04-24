@@ -26,7 +26,7 @@ const sprinklerSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 // model
-const sprinklerModel = mongoose.model('Sprinkler', sprinklerSchema)
+const sprinklerModel = mongoose.model('Sprinkler', sprinklerSchema, "items")
 
 // export
 module.exports = sprinklerModel
