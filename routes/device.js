@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Utils = require('./../utils')
-const Place = require('./../models/Place')
+const Device = require('./../models/Device')
 const path = require('path')
 
 // Device routes-----------------------------------------------------------------
@@ -13,7 +13,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', (req, res) => { /** secure this down by adding auth token when done - only open for testing purposes */
     // Get all histories from the device model using the find() method
-    Place.find()
+    Device.find()
         .then((devices) => {
             res.json(devices)
         })

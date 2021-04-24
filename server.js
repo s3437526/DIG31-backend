@@ -53,10 +53,17 @@ app.use('/location', locationRouter)
 const deviceRouter = require('./routes/device')
 app.use('/device', deviceRouter)
 
-// item
-const itemRouter = require('./routes/item') // for all items such as TV, Light, Sprinkler etc
-app.use('/item', itemRouter)
+// tv
+const tvRouter = require('./routes/tv')
+app.use('/tv', tvRouter)
 
+// light
+const lightRouter = require('./routes/light')
+app.use('/light', lightRouter)
+
+// // item
+// const itemRouter = require('./routes/item')
+// app.use('/item', itemRouter)
 
 // run app listen on port --------------------
 app.listen(port, () => {

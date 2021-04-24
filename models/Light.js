@@ -18,7 +18,7 @@ const lightSchema = new mongoose.Schema({
     reportingRate: { type: Number, required: true },
     ipAddress: { type: String, required: true },
     mqttTopic: { type: String, required: true },
-    lastActive: { type: Array, required: false },
+    lastActive: { type: [Date], required: false },
     activityHistory: { type: Schema.Types.ObjectId, required: true, ref: 'ActivityHistory' } // Link to ActivityHistory?
     // activityDuration: { type: Array, required: false } // Not needed - taken from ActivityHisotry duration?
 }, { timestamps: true })
