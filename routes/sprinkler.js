@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Utils = require('../utils')
 const Sprinkler = require('../models/Sprinkler')
+const Item = require('../models/Light')
 const path = require('path')
 
 // Sprinkler routes-----------------------------------------------------------------
@@ -13,7 +14,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', (req, res) => {
     // Get all sprinklers from the sprinkler model using the find() method
-    Sprinkler.find()
+    Item.find({ type: "60853a6d26779032244c9237" }).populate("placeName").populate("type").populate("activityHistory")
         .then((sprinklers) => {
             res.json(sprinklers)
         })
@@ -59,7 +60,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
             avatarFilename = uniqueFilename
                 // update sprinkler with all fields including avatar
             updateSprinkler({
-                firstName: req.body.firstName,                              /// edit here... or remove - I think it's not needed???
+                firstName: req.body.firstName, /// edit here... or remove - I think it's not needed???
                 lastName: req.body.lastName,
                 email: req.body.email,
                 avatar: avatarFilename,

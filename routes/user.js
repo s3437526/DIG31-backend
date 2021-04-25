@@ -25,6 +25,7 @@ router.get('/', (req, res) => {
 // GET - get single user -------------------------------------------------------
 router.get('/:id', (req, res) => { ////////////////////////////////////////////////Utils.authenticateToken,
     if (req.user._id != req.params.id) { ///// not working....?
+        console.log(req.params.id)
         return res.status(401).json({
             message: "Not authorised"
         })

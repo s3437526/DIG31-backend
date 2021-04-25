@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Utils = require('./../utils')
 const Place = require('./../models/Place')
+const Item = require('../models/Light')
 const path = require('path')
 
 // Places routes-----------------------------------------------------------------

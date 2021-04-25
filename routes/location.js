@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Utils = require('./../utils')
-const Place = require('./../models/Place')
+const Location = require('./../models/Location')
 const path = require('path')
 
 // Location routes-----------------------------------------------------------------
@@ -13,7 +13,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', (req, res) => { /** secure this down by adding auth token when done - only open for testing purposes */
     // Get all histories from the location model using the find() method
-    Place.find()
+    Location.find()
         .then((locations) => {
             res.json(locations)
         })
@@ -54,7 +54,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // if avatar image exists, upload!
     if (req.files && req.files.avatar) {
         // upload avater image then update location
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')     /// not sure how this will work yet... if it will be needed
+        let uploadPath = path.join(__dirname, '..', 'public', 'images') /// not sure how this will work yet... if it will be needed
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
             avatarFilename = uniqueFilename
                 // update location with all fields including avatar
@@ -63,9 +63,9 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
                 // lastName: req.body.lastName,
                 // email: req.body.email,
                 locationType: req.body.locationType,
-                iconURL: req.body.iconURL                         // location only uses iconURL and locationType in schema
-                // bio: req.body.bio,
-                // accessLevel: req.body.accessLevel
+                iconURL: req.body.iconURL // location only uses iconURL and locationType in schema
+                    // bio: req.body.bio,
+                    // accessLevel: req.body.accessLevel
             })
         })
     } else {
@@ -96,11 +96,11 @@ router.post('/', (req, res) => {
     // check account with email doen't already exist        /// Just check that the location ID doesn't exist...
     Location.findOne({ email: req.body.email })
         .then(location => {
-            if (location != null) {
-                return res.status(400).json({
-                    message: "email already in use, use different email address" //////// ?
-                })
-            }
+            // if (location != null) {
+            //     return res.status(400).json({
+            //         message: "email already in use, use different email address" //////// ?
+            //     })
+            // }
             // create new location       
             let newLocation = new Location(req.body)
             newLocation.save()

@@ -54,7 +54,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // if avatar image exists, upload!
     if (req.files && req.files.avatar) {
         // upload avater image then update device
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')     /// not sure how this will work yet... if it will be needed
+        let uploadPath = path.join(__dirname, '..', 'public', 'images') /// not sure how this will work yet... if it will be needed
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
             avatarFilename = uniqueFilename
                 // update device with all fields including avatar
@@ -63,9 +63,9 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
                 // lastName: req.body.lastName,
                 // email: req.body.email,
                 type: req.body.locationType,
-                iconURL: req.body.iconURL                         // device only uses iconURL and locationType in schema
-                // bio: req.body.bio,
-                // accessLevel: req.body.accessLevel
+                iconURL: req.body.iconURL // device only uses iconURL and locationType in schema
+                    // bio: req.body.bio,
+                    // accessLevel: req.body.accessLevel
             })
         })
     } else {
@@ -96,11 +96,11 @@ router.post('/', (req, res) => {
     // check account with email doen't already exist        /// Just check that the device ID doesn't exist...
     Device.findOne({ email: req.body.email })
         .then(device => {
-            if (device != null) {
-                return res.status(400).json({
-                    message: "email already in use, use different email address" //////// ?
-                })
-            }
+            // if (device != null) {
+            //     return res.status(400).json({
+            //         message: "email already in use, use different email address" //////// ?
+            //     })
+            // }
             // create new device       
             let newDevice = new Device(req.body)
             newDevice.save()

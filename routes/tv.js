@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Utils = require('../utils')
 const Tv = require('../models/Tv')
+const Item = require('../models/Light')
 const path = require('path')
 
 // Tv routes-----------------------------------------------------------------
@@ -13,7 +14,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', (req, res) => {
     // Get all tvs from the tv model using the find() method
-    Tv.find()
+    Item.find({ type: "60853adf26779032244c9238" }).populate("placeName").populate("type").populate("activityHistory")
         .then((tvs) => {
             res.json(tvs)
         })
@@ -59,7 +60,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
             avatarFilename = uniqueFilename
                 // update tv with all fields including avatar
             updateTv({
-                firstName: req.body.firstName,                              /// edit here... or remove - I think it's not needed???
+                firstName: req.body.firstName, /// edit here... or remove - I think it's not needed???
                 lastName: req.body.lastName,
                 email: req.body.email,
                 avatar: avatarFilename,
@@ -95,11 +96,11 @@ router.post('/', (req, res) => {
     // check account with email doen't already exist                /// look for something else here
     Tv.findOne({ email: req.body.email })
         .then(tv => {
-            if (tv != null) {
-                return res.status(400).json({
-                    message: "email already in use, use different email address"
-                })
-            }
+            // if (tv != null) {
+            //     return res.status(400).json({
+            //         message: "email already in use, use different email address"
+            //     })
+            // }
             // create new tv       
             let newTv = new Tv(req.body)
             newTv.save()

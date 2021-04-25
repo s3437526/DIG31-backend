@@ -14,7 +14,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', (req, res) => {
     // Get all lights from the light model using the find() method
-    Item.find().populate("placeName", "type", "activityHistory") // , "activityhistory" is problematic // also find the specific light somehow??
+    Item.find({ type: "6083b63c3477435e1c8dd579" }).populate("placeName").populate("type").populate("activityHistory")
         .then((items) => {
             res.json(items)
         })
@@ -60,7 +60,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
             avatarFilename = uniqueFilename
                 // update light with all fields including avatar
             updateLight({
-                firstName: req.body.firstName,                              /// edit here... or remove - I think it's not needed???
+                firstName: req.body.firstName, /// edit here... or remove - I think it's not needed???
                 lastName: req.body.lastName,
                 email: req.body.email,
                 avatar: avatarFilename,
@@ -96,11 +96,11 @@ router.post('/', (req, res) => {
     // check account with email doen't already exist                /// look for something else here
     Item.findOne({ email: req.body.email })
         .then(item => {
-            if (item != null) {
-                return res.status(400).json({
-                    message: "email already in use, use different email address"
-                })
-            }
+            // if (item != null) {
+            //     return res.status(400).json({
+            //         message: "email already in use, use different email address"
+            //     })
+            // }
             // create new light       
             let newLight = new Light(req.body)
             newLight.save()
