@@ -19,3 +19,8 @@ DIG31 - UX3 Backend
 Deviations from A2:
 - Some schema models modified to improve interconnectivity e.g. placeName, type, activityHistory, imageURL, activityDuration were included as references to other entities rathern than stand-alone entities.
 - Same for itemId of ActivityHistory?
+
+TODO
+- Add delete routes
+- Disable master category deletions?
+- Add checking for existing items on POST

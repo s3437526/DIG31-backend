@@ -3,6 +3,7 @@ const router = express.Router()
 const Utils = require('./../utils')
 const User = require('./../models/User')
 const path = require('path')
+const { rejects } = require('assert')
 
 // User routes-----------------------------------------------------------------
 // GET - get all users
@@ -11,21 +12,28 @@ const path = require('path')
 This code block handles the request to retrieve all users from the database and if 
 this is unsuccessful, throws a generic error
 */
-router.get('/', (req, res) => {
+router.get('/', Utils.authenticateToken, (req, res) => {
     // Get all users from the user model using the find() method
-    User.find()
-        .then((users) => {
-            res.json(users)
+    // only signed in ADMIN user can list all users
+    if (req.headers.access != 2) { // There has to be a safer way of determining admin...
+        res.status(401).json({
+            message: "Not authorised, your are not an administrator"
         })
-        .catch((err) => {
-            console.log("There was a problem with retrieving users ", err)
-        })
+    } else {
+        User.find()
+            .then((users) => {
+                res.json(users)
+            })
+            .catch((err) => {
+                console.log("There was a problem with retrieving users ", err)
+            })
+    }
 })
 
 // GET - get single user -------------------------------------------------------
-router.get('/:id', (req, res) => { ////////////////////////////////////////////////Utils.authenticateToken,
-    if (req.user._id != req.params.id) { ///// not working....?
-        console.log(req.params.id)
+router.get('/:id', Utils.authenticateToken, (req, res) => {
+    // users can view their own profile, but ADMIN user can view any other profile also for modifying purposes
+    if (req.user._id != req.params.id && req.headers.access != 2) { // There has to be a safer way of determining admin...
         return res.status(401).json({
             message: "Not authorised"
         })
@@ -87,7 +95,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
 })
 
 // POST - create new user --------------------------------------
-router.post('/', (req, res) => {
+router.post('/', Utils.authenticateToken, (req, res) => {
     // validate request
     if (Object.keys(req.body).length === 0) {
         return res.status(400).send({ message: "User content can not be empty" })
@@ -117,6 +125,34 @@ router.post('/', (req, res) => {
                     })
                 })
         })
+})
+
+// DELETE - delete user --------------------------------------
+router.delete('/:id', Utils.authenticateToken, (req, res) => {
+    // make sure the user is admin
+    if (req.headers.access != 2) { // There has to be a safer way of determining admin...
+        return res.status(401).json({
+            message: "Not authorised to delete user, you are not and admin!"
+        })
+    }
+
+    // attempt to delete the user
+    try {
+        User.findByIdAndDelete({ _id: req.params.id })
+            .then(user => {
+                    res.status(200).json({
+                        message: "User " + user.firstName + " " + user.lastName + " successfully deleted.",
+                        user
+                    })
+                }
+
+            )
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed deleting user",
+            err
+        })
+    }
 })
 
 module.exports = router

@@ -87,36 +87,52 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
 })
 
 // POST - create new tv --------------------------------------
-router.post('/', (req, res) => {
+router.post('/', Utils.authenticateToken, (req, res) => {
     // validate request
     if (Object.keys(req.body).length === 0) {
         return res.status(400).send({ message: "Tv content can not be empty" })
     }
 
-    // check account with email doen't already exist                /// look for something else here
-    Tv.findOne({ email: req.body.email })
+    // check that tv with same name doen't already exist
+    Tv.findOne({ name: req.body.name })
         .then(tv => {
-            // if (tv != null) {
-            //     return res.status(400).json({
-            //         message: "email already in use, use different email address"
-            //     })
-            // }
-            // create new tv       
-            let newTv = new Tv(req.body)
-            newTv.save()
-                .then(tv => {
-                    // success!  
-                    // return 201 status with tv object
-                    return res.status(201).json(tv)
+            if (tv != null) {
+                return res.status(400).json({
+                    message: `The TV "${req.body.name}" already exists. Consider renaming it.`
                 })
-                .catch(err => {
-                    console.log(err)
-                    return res.status(500).send({
-                        message: "Problem creating tv",
-                        error: err
-                    })
-                })
+            }
         })
+    Item.findOne({ ipAddress: req.body.ipAddress })
+        .then(item => {
+
+            console.log(item.ipAddress)
+            if (item.ipAddress === req.body.ipAddress) {
+                return res.status(400).json({
+                    message: "The Ip " + req.body.ipAddress + " already exists. It must be unique."
+                })
+            } else {
+                tv => {
+                    let newTv = new Tv(req.body)
+                    newTv.save()
+                        .then(tv => {
+                            // success!  
+                            // return 201 status with tv object
+                            return res.status(201).json(tv)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            return res.status(500).send({
+                                message: "Problem creating tv",
+                                error: err
+                            })
+                        })
+                }
+            }
+        })
+
+
+    // create new tv       
+
 })
 
 module.exports = router
