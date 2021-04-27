@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Utils = require('../utils')
 const Tv = require('../models/Tv')
-const Item = require('../models/Light')
+const Item = require('../models/Tv')
 const path = require('path')
 
 // Tv routes-----------------------------------------------------------------
@@ -58,7 +58,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
         let uploadPath = path.join(__dirname, '..', 'public', 'images')
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
             avatarFilename = uniqueFilename
-                // update tv with all fields including avatar
+            // update tv with all fields including avatar
             updateTv({
                 firstName: req.body.firstName, /// edit here... or remove - I think it's not needed???
                 lastName: req.body.lastName,
@@ -102,33 +102,54 @@ router.post('/', Utils.authenticateToken, (req, res) => {
                 })
             }
         })
-    Item.findOne({ ipAddress: req.body.ipAddress })
-        .then(item => {
-
-            console.log(item.ipAddress)
-            if (item.ipAddress === req.body.ipAddress) {
-                return res.status(400).json({
-                    message: "The Ip " + req.body.ipAddress + " already exists. It must be unique."
-                })
-            } else {
-                tv => {
-                    let newTv = new Tv(req.body)
-                    newTv.save()
-                        .then(tv => {
-                            // success!  
-                            // return 201 status with tv object
-                            return res.status(201).json(tv)
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            return res.status(500).send({
-                                message: "Problem creating tv",
-                                error: err
-                            })
-                        })
+        .then(() => {
+            Item.findOne({ ipAddress: req.body.ipAddress }) // not returning anything... null
+                .then(item => {
+                    console.log(item)
+                    if (item != null) {
+                        return true
+                    } else {
+                        return false
+                    }
                 }
-            }
+                )
         })
+
+    // if (Utils.checkIpAddress(req.body.ipAddress)) {
+    //     return res.status(400).json({
+    //         message: "The Ip " + req.body.ipAddress + " already exists. It must be unique."
+    //     })
+    // }
+
+
+
+    // Item.findOne({ ipAddress: req.body.ipAddress })
+    // .then(item => {
+
+    //     console.log(item.ipAddress)
+    //     if (item.ipAddress === req.body.ipAddress) {
+    //         return res.status(400).json({
+    //             message: "The Ip " + req.body.ipAddress + " already exists. It must be unique."
+    //         })
+    //     } else {
+    //         tv => {
+    //             let newTv = new Tv(req.body)
+    //             newTv.save()
+    //                 .then(tv => {
+    //                     // success!  
+    //                     // return 201 status with tv object
+    //                     return res.status(201).json(tv)
+    //                 })
+    //                 .catch(err => {
+    //                     console.log(err)
+    //                     return res.status(500).send({
+    //                         message: "Problem creating tv",
+    //                         error: err
+    //                     })
+    //                 })
+    //         }
+    //     }
+    // })
 
 
     // create new tv       
