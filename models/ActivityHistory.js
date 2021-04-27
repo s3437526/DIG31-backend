@@ -3,7 +3,6 @@ const Schema = mongoose.Schema
 
 // schema
 const activityHistorySchema = new Schema({
-    // itemId: { type: Number, required: true }, // May not be required...?
     lastActive: {
         type: [Date],
         required: true

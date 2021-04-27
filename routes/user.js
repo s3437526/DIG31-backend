@@ -55,6 +55,12 @@ router.get('/:id', Utils.authenticateToken, (req, res) => {
 
 // PUT - update user ---------------------------------------------
 router.put('/:id', Utils.authenticateToken, (req, res) => {
+
+    // check that the user is admin in order to modify users unless they are modifying themselves
+    if (req.user._id != req.params.id || req.headers.access != 2) {
+        return res.status(401).send({ message: "You have to be an administrator to modify users" })
+    }
+
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
@@ -96,6 +102,12 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
 
 // POST - create new user --------------------------------------
 router.post('/', Utils.authenticateToken, (req, res) => {
+
+    // check that the user is admin
+    if (req.headers.access != 2) {
+        return res.status(401).send({ message: "You have to be an administrator to create users" })
+    }
+
     // validate request
     if (Object.keys(req.body).length === 0) {
         return res.status(400).send({ message: "User content can not be empty" })
@@ -132,7 +144,7 @@ router.delete('/:id', Utils.authenticateToken, (req, res) => {
     // make sure the user is admin
     if (req.headers.access != 2) { // There has to be a safer way of determining admin...
         return res.status(401).json({
-            message: "Not authorised to delete user, you are not and admin!"
+            message: "Not authorised to delete user, you are not an admin!"
         })
     }
 

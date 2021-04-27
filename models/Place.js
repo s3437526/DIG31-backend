@@ -5,7 +5,6 @@ const Schema = mongoose.Schema
 const placeSchema = new mongoose.Schema({
     placeName: { type: String, required: true },
     locationType: { type: Schema.Types.ObjectId, required: true, ref: 'Location' },
-    // iconURL: { type: String, required:  true } // Not needed - taken from ActivityHisotry duration?
 }, { timestamps: true })
 
 // model

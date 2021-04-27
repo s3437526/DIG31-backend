@@ -6,7 +6,6 @@ const Schema = mongoose.Schema
 const lightSchema = new mongoose.Schema({
     placeName: { type: Schema.Types.ObjectId, required: true, ref: 'Place' },
     type: { type: Schema.Types.ObjectId, required: true, ref: 'Device' },
-    // imageURL: { type: String, required: true }, // Not needed - taken from device image URL?
     name: { type: String, required: true },
     status: { type: Number, required: true },
     state: { type: Number, required: true },
@@ -20,7 +19,6 @@ const lightSchema = new mongoose.Schema({
     mqttTopic: { type: String, required: true },
     lastActive: { type: [Date], required: false },
     activityHistory: { type: Schema.Types.ObjectId, required: true, ref: 'ActivityHistory' }
-    // activityDuration: { type: Array, required: false } // Not needed - taken from ActivityHisotry duration?
 }, { timestamps: true })
 
 // model

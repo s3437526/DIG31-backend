@@ -37,9 +37,9 @@ app.use('/auth', authRouter)
 const userRouter = require('./routes/user')
 app.use('/user', userRouter)
 
-// activity history
-const activityHistoryRouter = require('./routes/activityHistory')
-app.use('/activityHistory', activityHistoryRouter)
+// // activity history
+// const activityHistoryRouter = require('./routes/activityHistory')
+// app.use('/activityHistory', activityHistoryRouter)
 
 // place
 const placeRouter = require('./routes/place')
