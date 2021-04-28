@@ -54,40 +54,15 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
-    let avatarFilename = null
-
-    // if avatar image exists, upload!
-    if (req.files && req.files.avatar) {
-        // upload avater image then update item
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')
-        Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
-            avatarFilename = uniqueFilename
-                // update item with all fields including avatar
-                // updateItem({
-                //     firstName: req.body.firstName, /// edit here... or remove - I think it's not needed???
-                //     lastName: req.body.lastName,
-                //     email: req.body.email,
-                //     avatar: avatarFilename,
-                //     bio: req.body.bio,
-                //     accessLevel: req.body.accessLevel
-                // })
-        })
-    } else {
-        // update item without avatar
-        updateItem(req.body)
-    }
-
     // update Tv
-    function updateItem(update) {
-        Tv.findByIdAndUpdate(req.params.id, update, { new: true })
-            .then(tv => res.json(tv))
-            .catch(err => {
-                res.status(500).json({
-                    message: 'Problem updating tv',
-                    error: err
-                })
+    Tv.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then(tv => res.json(tv))
+        .catch(err => {
+            res.status(500).json({
+                message: 'Problem updating tv',
+                error: err
             })
-    }
+        })
 })
 
 // POST - create new tv --------------------------------------

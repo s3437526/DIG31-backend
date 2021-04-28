@@ -47,47 +47,23 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // make sure the user is admin
     if (req.headers.access != 2) { // There has to be a safer way of determining admin...
         return res.status(401).json({
-            message: "Not authorised to change, you are not and admin!"
+            message: "Not authorised to change, you are not an admin!"
         })
     }
 
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
-    let avatarFilename = null
-
-    // if avatar image exists, upload!
-    if (req.files && req.files.avatar) {
-        // upload avater image then update light
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')
-        Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
-            avatarFilename = uniqueFilename
-                // update light with all fields including avatar
-                // updateItem({
-                //     firstName: req.body.firstName, /// edit here... or remove - I think it's not needed???
-                //     lastName: req.body.lastName,
-                //     email: req.body.email,
-                //     avatar: avatarFilename,
-                //     bio: req.body.bio,
-                //     accessLevel: req.body.accessLevel
-                // })
-        })
-    } else {
-        // update light without avatar
-        updateItem(req.body)
-    }
-
-    // update Light
-    function updateItem(update) {
-        Light.findByIdAndUpdate(req.params.id, update, { new: true })
-            .then(light => res.json(light))
-            .catch(err => {
-                res.status(500).json({
-                    message: 'Problem updating light',
-                    error: err
-                })
+    // update light
+    Light.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then(light => res.json(light))
+        .catch(err => {
+            res.status(500).json({
+                message: 'Problem updating light',
+                error: err
             })
-    }
+        })
+
 })
 
 // POST - create new light --------------------------------------

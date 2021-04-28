@@ -54,40 +54,15 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
-    let avatarFilename = null
-
-    // if avatar image exists, upload!
-    if (req.files && req.files.avatar) {
-        // upload avater image then update sprinkler
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')
-        Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
-            avatarFilename = uniqueFilename
-                // update sprinkler with all fields including avatar
-                // updateItem({
-                //     firstName: req.body.firstName, /// edit here... or remove - I think it's not needed???
-                //     lastName: req.body.lastName,
-                //     email: req.body.email,
-                //     avatar: avatarFilename,
-                //     bio: req.body.bio,
-                //     accessLevel: req.body.accessLevel
-                // })
-        })
-    } else {
-        // update sprinkler without avatar
-        updateItem(req.body)
-    }
-
-    // update Sprinkler
-    function updateItem(update) {
-        Sprinkler.findByIdAndUpdate(req.params.id, update, { new: true })
-            .then(sprinkler => res.json(sprinkler))
-            .catch(err => {
-                res.status(500).json({
-                    message: 'Problem updating sprinkler',
-                    error: err
-                })
+    // update sprinkler
+    Sprinkler.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then(sprinkler => res.json(sprinkler))
+        .catch(err => {
+            res.status(500).json({
+                message: 'Problem updating sprinkler',
+                error: err
             })
-    }
+        })
 })
 
 // POST - create new sprinkler --------------------------------------

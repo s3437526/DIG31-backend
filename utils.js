@@ -1,8 +1,6 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 let crypto = require('crypto');
-// const express = require('express')
-// const router = express.Router()
 const { v4: uuidv4 } = require('uuid')
 const path = require('path')
 const Item = require('./models/Item');

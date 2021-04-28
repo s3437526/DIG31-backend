@@ -73,7 +73,17 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
             avatarFilename = uniqueFilename
                 // update user with all fields including avatar
+            req.user.accessLevel != 2 ? updateUser() : updateUserAsAdmin()
+                // update own profile (as non-admin)
             updateUser({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                    avatar: avatarFilename,
+                    bio: req.body.bio
+                })
+                // only admin can change user's accessLevel
+            updateUserAsAdmin({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: req.body.email,

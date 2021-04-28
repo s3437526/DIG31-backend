@@ -52,40 +52,15 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
-    let avatarFilename = null
-
-    // if avatar image exists, upload!
-    if (req.files && req.files.avatar) {
-        // upload avater image then update place
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')
-        Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
-            avatarFilename = uniqueFilename
-                // update place with all fields including avatar
-                // updatePlace({
-                //     firstName: req.body.firstName,
-                //     lastName: req.body.lastName,
-                //     email: req.body.email,
-                //     avatar: avatarFilename,
-                //     bio: req.body.bio,
-                //     accessLevel: req.body.accessLevel
-                // })
-        })
-    } else {
-        // update place without avatar
-        updatePlace(req.body)
-    }
-
     // update Place
-    function updatePlace(update) {
-        Place.findByIdAndUpdate(req.params.id, update, { new: true })
-            .then(place => res.json(place))
-            .catch(err => {
-                res.status(500).json({
-                    message: 'Problem updating place',
-                    error: err
-                })
+    Place.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then(place => res.json(place))
+        .catch(err => {
+            res.status(500).json({
+                message: 'Problem updating place',
+                error: err
             })
-    }
+        })
 })
 
 // POST - create new place --------------------------------------

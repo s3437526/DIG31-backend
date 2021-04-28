@@ -45,26 +45,25 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // make sure the user is admin
     if (req.headers.access != 2) { // There has to be a safer way of determining admin...
         return res.status(401).json({
-            message: "Not authorised to change, you are not and admin!"
+            message: "Not authorised to change, you are not an admin!"
         })
     }
 
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
-    let avatarFilename = null
+    let iconURL = null
 
     // if avatar image exists, upload!
     if (req.files && req.files.avatar) {
         // upload avater image then update device
-        let uploadPath = path.join(__dirname, '..', 'public', 'images')
+        let uploadPath = path.join(__dirname, '..', 'public', 'icons')
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
-            avatarFilename = uniqueFilename
-                // update device with all fields including avatar  /// not sure how this will work yet... if it will be needed
-                // updateDevice({
-                //     type: req.body.locationType,
-                //     iconURL: req.body.iconURL
-                // })
+            iconURL = uniqueFilename
+                // update device with all fields including avatar
+            updateDevice({
+                iconURL: req.body.iconURL
+            })
         })
     } else {
         // update device without avatar
@@ -90,7 +89,7 @@ router.post('/', Utils.authenticateToken, (req, res) => {
     // make sure the user is admin
     if (req.headers.access != 2) { // There has to be a safer way of determining admin...
         return res.status(401).json({
-            message: "Not authorised to create, you are not and admin!"
+            message: "Not authorised to create, you are not an admin!"
         })
     }
 

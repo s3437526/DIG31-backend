@@ -67,23 +67,17 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
     // validate request
     if (!req.body) return res.status(400).send("Task content can't be empty")
 
-    let avatarFilename = null
+    let iconURL = null
 
     // if avatar image exists, upload!
     if (req.files && req.files.avatar) {
         // upload avater image then update location
-        let uploadPath = path.join(__dirname, '..', 'public', 'images') /// not sure how this will work yet... if it will be needed
+        let uploadPath = path.join(__dirname, '..', 'public', 'icons')
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
-            avatarFilename = uniqueFilename
+            iconURL = uniqueFilename
                 // update location with all fields including avatar
             updateLocation({
-                // firstName: req.body.firstName,
-                // lastName: req.body.lastName,
-                // email: req.body.email,
-                locationType: req.body.locationType,
-                iconURL: req.body.iconURL // location only uses iconURL and locationType in schema
-                    // bio: req.body.bio,
-                    // accessLevel: req.body.accessLevel
+                iconURL: req.body.iconURL
             })
         })
     } else {
