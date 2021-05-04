@@ -57,6 +57,10 @@ app.use('/device', deviceRouter)
 const tvRouter = require('./routes/tv')
 app.use('/tv', tvRouter)
 
+// item
+const itemRouter = require('./routes/item')
+app.use('/item', itemRouter)
+
 // light
 const lightRouter = require('./routes/light')
 app.use('/light', lightRouter)
