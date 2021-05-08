@@ -13,7 +13,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', Utils.authenticateToken, (req, res) => {
     // Get all places from the activity history model using the find() method
-    Place.find()
+    Place.find().populate("locationType")
         .then((places) => {
             res.json(places)
         })
@@ -25,7 +25,7 @@ router.get('/', Utils.authenticateToken, (req, res) => {
 // GET - get single activity history -------------------------------------------------------
 router.get('/:id', Utils.authenticateToken, (req, res) => {
 
-    Place.findById(req.params.id)
+    Place.findById(req.params.id).populate("locationType")
         .then(place => {
             res.json(place)
         })

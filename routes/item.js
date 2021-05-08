@@ -13,7 +13,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', Utils.authenticateToken, (req, res) => {
     // Get all devices from the device model using the find() method
-    Item.find()
+    Item.find().populate("placeName").populate("type").populate("activityHistory").populate("iconURL")
         .then((items) => {
             res.json(items)
         })

@@ -15,7 +15,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', Utils.authenticateToken, (req, res) => {
     // Get all lights from the light model using the find() method
-    Item.find({ type: "6083b63c3477435e1c8dd579" }).populate("placeName").populate("type").populate("activityHistory")
+    Item.find({ type: "6083b63c3477435e1c8dd579" }).populate("placeName").populate("type").populate("activityHistory").populate("iconURL")
         .then((items) => {
             res.json(items)
         })
@@ -27,7 +27,7 @@ router.get('/', Utils.authenticateToken, (req, res) => {
 // GET - get single light -------------------------------------------------------
 router.get('/:id', (req, res) => {
 
-    Light.findById(req.params.id).populate("placeName").populate("type").populate("activityHistory")
+    Light.findById(req.params.id).populate("placeName").populate("type").populate("activityHistory").populate("iconURL")
         .then(light => {
             res.json(light)
         })

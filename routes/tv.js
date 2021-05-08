@@ -15,7 +15,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', Utils.authenticateToken, (req, res) => {
     // Get all tvs from the tv model using the find() method
-    Item.find({ type: "60853adf26779032244c9238" }).populate("placeName").populate("type").populate("activityHistory")
+    Item.find({ type: "60853adf26779032244c9238" }).populate("placeName").populate("type").populate("activityHistory").populate("iconURL")
         .then((tvs) => {
             res.json(tvs)
         })
@@ -27,7 +27,7 @@ router.get('/', Utils.authenticateToken, (req, res) => {
 // GET - get single tv -------------------------------------------------------
 router.get('/:id', Utils.authenticateToken, (req, res) => {
 
-    Tv.findById(req.params.id).populate("placeName").populate("type").populate("activityHistory")
+    Tv.findById(req.params.id).populate("placeName").populate("type").populate("activityHistory").populate("iconURL")
         .then(tv => {
             res.json(tv)
         })

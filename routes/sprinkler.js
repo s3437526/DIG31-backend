@@ -15,7 +15,7 @@ this is unsuccessful, throws a generic error
 */
 router.get('/', Utils.authenticateToken, (req, res) => {
     // Get all sprinklers from the sprinkler model using the find() method
-    Item.find({ type: "60853a6d26779032244c9237" }).populate("placeName").populate("type").populate("activityHistory")
+    Item.find({ type: "60853a6d26779032244c9237" }).populate("placeName").populate("type").populate("activityHistory").populate("iconURL")
         .then((sprinklers) => {
             res.json(sprinklers)
         })
@@ -27,7 +27,7 @@ router.get('/', Utils.authenticateToken, (req, res) => {
 // GET - get single sprinkler -------------------------------------------------------
 router.get('/:id', Utils.authenticateToken, (req, res) => {
 
-    Sprinkler.findById(req.params.id).populate("placeName").populate("type").populate("activityHistory")
+    Sprinkler.findById(req.params.id).populate("placeName").populate("type").populate("activityHistory").populate("iconURL")
         .then(sprinkler => {
             res.json(sprinkler)
         })
