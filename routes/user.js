@@ -111,12 +111,12 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
 })
 
 // POST - create new user --------------------------------------
-router.post('/', Utils.authenticateToken, (req, res) => {
+router.post('/', (req, res) => { //Utils.authenticateToken,
 
-    // check that the user is admin
-    if (req.headers.access != 2) {
-        return res.status(401).send({ message: "You have to be an administrator to create users" })
-    }
+    // // check that the user is admin
+    // if (req.headers.access != 2) {
+    //     return res.status(401).send({ message: "You have to be an administrator to create users" })
+    // }
 
     // validate request
     if (Object.keys(req.body).length === 0) {
@@ -126,12 +126,13 @@ router.post('/', Utils.authenticateToken, (req, res) => {
     // check account with email doen't already exist
     User.findOne({ email: req.body.email })
         .then(user => {
-            if (user != null) {
+            if (user != null) { //************************ORRRR if user name exists... add that also (for username-based logins in the future...*/
                 return res.status(400).json({
                     message: "email already in use, use different email address"
                 })
             }
-            // create new user       
+            console.log(req.body)
+                // create new user       
             let newUser = new User(req.body)
             newUser.save()
                 .then(user => {

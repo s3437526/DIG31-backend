@@ -36,7 +36,7 @@ const userSchema = new Schema({
         required: true
     },
     status: {
-        type: Number,
+        type: Boolean,
         default: true
     },
 }, { timestamps: true })
