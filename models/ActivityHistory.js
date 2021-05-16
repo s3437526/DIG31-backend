@@ -8,7 +8,7 @@ const activityHistorySchema = new Schema({
         required: true
     },
     activityDuration: {
-        type: [Date],
+        type: [Number],
         required: true
     }
 
