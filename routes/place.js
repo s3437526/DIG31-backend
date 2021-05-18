@@ -77,11 +77,11 @@ router.post('/', Utils.authenticateToken, (req, res) => {
     if (Object.keys(req.body).length === 0) {
         return res.status(400).send({ message: "Place content can not be empty" })
     }
-
-    // Check that the place doesn't exist...
-    Place.findOne({ "placeName": req.body.placeName })
+    console.log(req.body)
+        // Check that the place doesn't exist...
+    Place.findOne({ placeName: req.body.placeName })
         .then(place => {
-            if (place.placeName === req.body.placeName) {
+            if (place != null) {
                 return res.status(400).json({
                     message: "The place " + req.body.placeName + " already exists. Consider renaming it"
                 })
