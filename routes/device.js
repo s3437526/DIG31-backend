@@ -97,8 +97,8 @@ router.post('/', Utils.authenticateToken, (req, res) => {
     if (Object.keys(req.body).length === 0) {
         return res.status(400).send({ message: "Device content can not be empty" })
     }
-
-    // Check that the device doesn't exist...
+    console.log(req.body)
+        // Check that the device doesn't exist...
     Device.findOne({ "type": req.body.type })
         .then(device => {
             if (device.type === req.body.type) {

@@ -79,7 +79,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     email: req.body.email,
-                    imageURL: avatarFilename, // was avatar
+                    imageURL: avatarFilename,
                     bio: req.body.bio
                 })
                 // only admin can change user's accessLevel
@@ -87,7 +87,7 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: req.body.email,
-                imageURL: avatarFilename, // was avatar
+                imageURL: avatarFilename,
                 bio: req.body.bio,
                 accessLevel: req.body.accessLevel
             })
