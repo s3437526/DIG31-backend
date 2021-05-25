@@ -55,8 +55,8 @@ router.get('/:id', Utils.authenticateToken, (req, res) => {
 
 // PUT - update user ---------------------------------------------
 router.put('/:id', Utils.authenticateToken, (req, res) => {
-
-    // check that the user is admin in order to modify users unless they are modifying themselves
+    console.log(req.headers)
+        // check that the user is admin in order to modify users unless they are modifying themselves
     if (req.user._id != req.params.id || req.headers.access != 2) {
         return res.status(401).send({ message: "You have to be an administrator to modify users" })
     }
@@ -73,24 +73,29 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
         Utils.uploadFile(req.files.avatar, uploadPath, (uniqueFilename) => {
             avatarFilename = uniqueFilename
                 // update user with all fields including avatar
-            req.user.accessLevel != 2 ? updateUser() : updateUserAsAdmin()
-                // update own profile (as non-admin)
-            updateUser({
+            if (req.user.accessLevel != 2) {
+                updateUser({
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     email: req.body.email,
                     imageURL: avatarFilename,
                     bio: req.body.bio
                 })
-                // only admin can change user's accessLevel
-            updateUserAsAdmin({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                imageURL: avatarFilename,
-                bio: req.body.bio,
-                accessLevel: req.body.accessLevel
-            })
+            } else {
+                updateUsery({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                    imageURL: avatarFilename,
+                    bio: req.body.bio,
+                    accessLevel: req.body.accessLevel
+                })
+            }
+
+            // update own profile (as non-admin)
+
+            // only admin can change user's accessLevel
+
         })
     } else {
         // update user without avatar
