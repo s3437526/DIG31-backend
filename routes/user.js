@@ -57,7 +57,9 @@ router.get('/:id', Utils.authenticateToken, (req, res) => {
 router.put('/:id', Utils.authenticateToken, (req, res) => {
     console.log(req.headers)
         // check that the user is admin in order to modify users unless they are modifying themselves
-    if (req.user._id != req.params.id || req.headers.access != 2) {
+    if (req.user._id != req.params.id || (req.headers.access != 2 && req.body.newUser == false)) {
+        console.log(`Headers recieved are: ${JSON.stringify(req.headers)}`)
+        console.log(`Body recieved is: ${JSON.stringify(req.body)}`)
         return res.status(401).send({ message: "You have to be an administrator to modify users" })
     }
 
@@ -79,31 +81,32 @@ router.put('/:id', Utils.authenticateToken, (req, res) => {
                     lastName: req.body.lastName,
                     email: req.body.email,
                     imageURL: avatarFilename,
-                    bio: req.body.bio
+                    bio: req.body.bio,
+                    newUser: !req.body.newUser
                 })
             } else {
-                updateUsery({
+                updateUser({
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     email: req.body.email,
                     imageURL: avatarFilename,
                     bio: req.body.bio,
-                    accessLevel: req.body.accessLevel
+                    accessLevel: req.body.accessLevel,
+                    newUser: !req.body.newUser
                 })
             }
-
-            // update own profile (as non-admin)
-
-            // only admin can change user's accessLevel
-
         })
     } else {
-        // update user without avatar
+        console.log(`Not not New user is: ${!req.body.newUser}`)
+            // update user without avatar
+            // user has been updated therefore
+        if (req.user._id == req.params.id) req.body.newUser = false
         updateUser(req.body)
     }
 
     // update User
     function updateUser(update) {
+        console.log(`user.js line 105 update is: ${JSON.stringify(update)}`)
         User.findByIdAndUpdate(req.params.id, update, { new: true })
             .then(user => res.json(user))
             .catch(err => {

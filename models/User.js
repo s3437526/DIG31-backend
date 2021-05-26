@@ -39,6 +39,10 @@ const userSchema = new Schema({
         type: Boolean,
         default: true
     },
+    newUser: {
+        type: Boolean,
+        default: true
+    },
 }, { timestamps: true })
 
 // encrypt password field on save
