@@ -22,7 +22,13 @@ const app = express()
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use('*', cors())
+// app.use('*', cors())
+app.use('*', cors({
+    origin: 'https://aalduk-backend.herokuapp.com/auth/signin))',
+    methods: ['GET'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 600
+}))
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 }
 }))
