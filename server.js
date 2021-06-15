@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 // app.use('*', cors())
 app.use('*', cors({
     origin: 'https://aalduk-backend.herokuapp.com/auth/signin))',
-    methods: ['GET'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     maxAge: 600
 }))
