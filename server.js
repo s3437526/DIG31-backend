@@ -24,7 +24,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 // app.use('*', cors())
 app.use(cors())
-app.options('*', cors());
+// app.options('*', cors());
+app.options(cors({
+    origin: 'https://elated-nightingale-5e8652.netlify.app'
+}));
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 }
 }))
