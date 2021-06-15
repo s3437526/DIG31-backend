@@ -6,7 +6,7 @@ const Utils = require('./../utils')
 const jwt = require('jsonwebtoken')
 
 // GET /signIn ---------------------------------------
-router.post('/signin', cors({origin: 'https://elated-nightingale-5e8652.netlify.app'}), (req, res) => {
+router.post('/signin', cors({origin: '*'}), (req, res) => {
     // 1. check if email and passwore are empty
     if (!req.body.email || !req.body.password) {
         return res.status(400).json({ message: "Please provide email and password" })
